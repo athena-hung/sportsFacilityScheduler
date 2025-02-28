@@ -37,15 +37,17 @@ router.get('/', async (req, res) => {
 
   try {
     let query = 'SELECT * FROM reservation WHERE TRUE'; // Base query
+    const conditions = [];
     const values = [];
+    let index = 1;
 
     if (startDate) {
-      query += ' AND start >= $1';
+      conditions.push(`start >= $${index}`);
       values.push(startDate);
     }
 
     if (endDate) {
-      query += ' AND end <= $2';
+      conditions.push(`end <= $${index}`);
       values.push(endDate);
     }
 

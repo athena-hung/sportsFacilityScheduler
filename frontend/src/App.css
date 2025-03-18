@@ -1,0 +1,218 @@
+/* Overall page styling */
+.app-container {
+    text-align: center;
+    padding: 20px;
+    background-image: url('./pics/pexels-mason-tuttle-612393380-17299530.jpg'); /* Path to your image */
+    background-size: cover; /* Ensure it covers the whole area */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    height: 100vh; /* Make the background fill the whole screen */
+    color: white; /* Text color to stand out against the background */
+    font-family: 'Arial', sans-serif; /* Set a basic font for the app */
+    box-sizing: border-box; /* Make sure padding and margin don’t cause overflow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .app-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Add gradient overlay */
+    z-index: 1;
+  }
+  
+  /* Header styling */
+  .app-header {
+    margin-bottom: 30px;
+    padding: 50px; /* Add some space around the header text */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background to help text stand out */
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+  }
+  
+  .app-header h1 {
+    color: #26c031;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .app-header h2 {
+    color: #26c031;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Login container */
+  .login-container {
+    margin-top: 30px; /* Push the login container down */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background for the forms */
+    border-radius: 10px;
+    display: inline-block; /* Keep the container inline so it doesn’t stretch */
+    max-width: 400px; /* Limit the maximum width */
+    width: 100%; /* Ensure the container uses full width up to the max-width */
+    box-sizing: border-box; /* Prevent content overflow */
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .login-form, .sign-up-form {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .login-container h2 {
+    font-size: 2em;
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  /* Input fields */
+  .login-container input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background-color: #f1f1f1;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .login-container input:focus {
+    border-color: #26c031; /* Green border on focus */
+    outline: none;
+  }
+  
+  /* Button styles */
+  .login-container button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .login-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Buttons for login and sign-up */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .admin-btn,
+  .user-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    background-color: #26c031;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .admin-btn:hover,
+  .user-btn:hover {
+    background-color: #1e9c28;
+  }
+  
+  /* Sign-in button styling */
+  .sign-in-btn,
+  .create-account-btn {
+    padding: 12px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .sign-in-btn:hover,
+  .create-account-btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Optional: Style the "Sign In" / "Sign Up" text links */
+  .signup-text a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .signup-text a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Styling for the forms */
+  .login-form,
+  .sign-up-form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 500px;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
+  }
+  
+  .sign-up-form {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  
+  /* When sign-up form is displayed */
+  .login-container .sign-up-form.active {
+    max-height: 500px;
+    opacity: 1;
+  }
+  
+  /* Media Queries for responsiveness */
+  @media (max-width: 768px) {
+    .app-container {
+      padding: 10px;
+    }
+  
+    .login-container {
+      width: 100%;
+      max-width: 350px;
+    }
+  
+    .app-header h1 {
+      font-size: 24px;
+    }
+  
+    .app-header h2 {
+      font-size: 16px;
+    }
+  }
+  

@@ -126,7 +126,9 @@ router.post('/', async (req, res) => {
       name: req.body.name,
       status: req.body.status,
       court_type_id: req.body.court_type_id,
-      org_id: req.body.org_id
+      org_id: req.body.org_id,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude
     };
 
     // Validate input
@@ -165,7 +167,9 @@ router.put('/:id', async (req, res) => {
       name: req.body.name,
       status: req.body.status,
       court_type_id: req.body.court_type_id,
-      org_id: req.body.org_id
+      org_id: req.body.org_id,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude
     };
 
     // Validate input

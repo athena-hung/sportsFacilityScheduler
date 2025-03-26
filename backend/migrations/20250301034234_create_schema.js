@@ -4,8 +4,11 @@ exports.up = function(knex) {
       .createTable('org', function(table) {
         table.increments('id').primary();
         table.string('name').notNullable();
-        table.string('address');
+        table.string('street');
+        table.string('state');
+        table.string('zip');
         table.integer('defaultCourtsPerDay').notNullable();
+        table.string('phone');
       })
   
       // CourtType table
@@ -13,7 +16,7 @@ exports.up = function(knex) {
         table.increments('id').primary();
         table.string('name').notNullable();
         table.integer('maxReservationTime');
-        table.integer('org_id').unsigned().references('id').inTable('org');
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
       })
   
       // Court table
@@ -21,35 +24,36 @@ exports.up = function(knex) {
         table.increments('id').primary();
         table.string('name').notNullable();
         table.string('status').notNullable();
-        table.integer('court_type_id').unsigned().references('id').inTable('court_type');
-        table.integer('org_id').unsigned().references('id').inTable('org');
-      })
-  
-      // Contact table
-      .createTable('contact', function(table) {
-        table.increments('id').primary();
-        table.string('firstName');
-        table.string('lastName');
-        table.integer('org_id').unsigned().references('id').inTable('org');
+        table.string('image');
+        table.string('street');
+        table.string('state');
+        table.string('zip');
+        table.float('latitude');
+        table.float('longitude');
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
       })
   
       // MemberTypes table
       .createTable('member_type', function(table) {
         table.increments('id').primary();
         table.string('type').notNullable();
-        table.integer('org_id').unsigned().references('id').inTable('org');
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
+        table.boolean('is_default').notNullable().defaultTo(false);
       })
   
       // Person table
-      .createTable('person', function(table) {
+      .createTable('user', function(table) {
         table.increments('id').primary();
         table.string('firstName').notNullable();
         table.string('lastName').notNullable();
         table.string('address');
         table.string('birthdate');
         table.integer('maxCourtsPerDay').notNullable();
-        table.integer('org_id').unsigned().references('id').inTable('org');
-        table.integer('member_type_id').unsigned().references('id').inTable('member_type');
+        table.string('email').notNullable().unique();
+        table.string('password').notNullable(); // Store hashed password here
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
+        table.integer('member_type_id').unsigned().references('id').inTable('member_type').onDelete('CASCADE');
+        table.timestamps(true, true);
       })
   
       // OpenHours table
@@ -58,13 +62,8 @@ exports.up = function(knex) {
         table.integer('dayOfWeek').notNullable();
         table.string('startTime').notNullable();
         table.string('endTime').notNullable();
-      })
-  
-      // CourtOpenHours table
-      .createTable('court_open_hour', function(table) {
-        table.increments('id').primary();
-        table.integer('openHoursId').unsigned().references('id').inTable('open_hour');
-        table.integer('court_id').unsigned().references('id').inTable('court');
+        table.integer('court_id').unsigned().references('id').inTable('court').onDelete('CASCADE');
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
       })
   
       // Pricing table
@@ -76,8 +75,9 @@ exports.up = function(knex) {
         table.string('timeEnd');
         table.integer('minAge').notNullable(); // senior rate
         table.integer('maxAge').notNullable(); // youth rate
-        table.integer('court_id').unsigned().references('id').inTable('court');
-        table.integer('member_type_id').unsigned().references('id').inTable('member_type');
+        table.integer('court_id').unsigned().references('id').inTable('court').onDelete('CASCADE');
+        table.integer('member_type_id').unsigned().references('id').inTable('member_type').onDelete('CASCADE');
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
       })
   
       // Reservation table
@@ -87,8 +87,18 @@ exports.up = function(knex) {
         table.string('end').notNullable();
         table.string('reason');
         table.string('notes');
-        table.integer('court_id').unsigned().references('id').inTable('court');
-        table.integer('person_id').unsigned().references('id').inTable('person');
+        table.string('status').notNullable().defaultTo('Confirmed');
+        table.integer('court_id').unsigned().references('id').inTable('court').onDelete('CASCADE');
+        table.integer('user_id').unsigned().references('id').inTable('user').onDelete('CASCADE');
+        table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
+      })
+  
+      // CourtCourtType table (junction table)
+      .createTable('court_court_type', function(table) {
+        table.increments('id').primary();
+        table.integer('court_id').unsigned().references('id').inTable('court').onDelete('CASCADE');
+        table.integer('court_type_id').unsigned().references('id').inTable('court_type').onDelete('CASCADE');
+        table.unique(['court_id', 'court_type_id']); // Ensure unique pairs
       })
   };
   
@@ -99,8 +109,7 @@ exports.up = function(knex) {
       .dropTableIfExists('open_hour')
       .dropTableIfExists('court_open_hour')
       .dropTableIfExists('member_type')
-      .dropTableIfExists('person')
-      .dropTableIfExists('contact')
+      .dropTableIfExists('user')
       .dropTableIfExists('court')
       .dropTableIfExists('court_type')
       .dropTableIfExists('org');

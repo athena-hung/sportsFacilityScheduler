@@ -55,3 +55,21 @@ npm start
 Now, the server will run at http://localhost:3000/
 
 Make API requests to the server to test (I recommend using [Postman](https://www.postman.com/))
+
+### Running Tests
+
+In the backend folder, run the following command to execute the test suite:
+
+```bash
+npm test
+```
+
+This command will run all the automated tests for the backend.
+
+### API Documentation
+
+The API documentation is available in the `api_docs.md` file.
+
+### Database Schema
+
+The database schema is available in the `schema.md` file.

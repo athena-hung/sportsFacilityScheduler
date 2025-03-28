@@ -114,4 +114,3 @@ exports.up = function(knex) {
       .dropTableIfExists('court_type')
       .dropTableIfExists('org');
   };
-  

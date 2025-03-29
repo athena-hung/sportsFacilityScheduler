@@ -18,6 +18,8 @@ async function dropAllTables() {
       }
     } catch (err) {
       console.error('Error dropping tables:', err);
+    } finally {
+      process.exit(); // Ensure the process exits after dropping tables
     }
 }
   

@@ -15,11 +15,23 @@ const bcrypt = require('bcryptjs');
 
 // Initialize express app
 const app = express();
+//allows connection from front end port
+const cors = require('cors');
+app.use(cors());
 const port = 3000;
+
+//
+
 
 // Middleware
 app.use(bodyParser.json());
 app.use(passport.initialize());
+
+app.get('/', (req, res) => {
+  console.log("successfully connected")
+  res.send('Backend is runningg 🚀');
+});
+
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

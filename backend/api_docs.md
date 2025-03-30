@@ -1,5 +1,7 @@
 # API Documentation
 
+> **IMPORTANT**: All date/time values are expected to be in the format `"YYYY-MM-DD HH:MM"` (e.g., the string "2025-05-05 12:00"). Dates should be in `YYYY-MM-DD` format and times in 24-hour `HH:MM` format.
+
 ## Introduction
 
 This document provides an overview of the API endpoints for the Sports Facility Scheduler backend. Endpoints are divided into namespaces for user management and reservation management. Many endpoints require JWT-based authentication. Include the header:

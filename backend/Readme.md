@@ -134,10 +134,4 @@ Make API requests to the server to test (I recommend using [Postman](https://www
 
 ### Running Tests
 
-In the backend folder, run the following command to execute the test suite:
-
-```bash
-npm test
-```
-
-This command will run all the automated tests for the backend.
+TODO: Add tests in postman instead of javascript

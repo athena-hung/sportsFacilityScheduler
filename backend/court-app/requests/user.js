@@ -128,7 +128,11 @@ router.post('/login', async (req, res) => {
 
     // Prepare token payload (avoid including sensitive fields)
     const tokenPayload = { id: user.id, email: user.email };
-    const token = jwt.sign(tokenPayload, jwtOptions.secretOrKey, { expiresIn: '1h' });
+    const token = jwt.sign(
+      tokenPayload,
+      'yourSecretKey',
+      { expiresIn: '30d' }
+    );
     return res.json({ token });
   } catch (error) {
     console.error('Login error: ', error);

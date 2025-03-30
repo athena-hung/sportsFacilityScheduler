@@ -35,7 +35,10 @@ app.get('/', (req, res) => {
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'yourSecretKey'
+  secretOrKey: 'yourSecretKey',
+  jsonWebTokenOptions: {
+    expiresIn: '30d'
+  }
 };
 
 // Passport JWT Strategy: Lookup user in the DB based on JWT payload

@@ -88,6 +88,9 @@ exports.up = function(knex) {
         table.string('reason');
         table.string('notes');
         table.string('status').notNullable().defaultTo('Confirmed');
+        table.float('price').defaultTo(0);
+        table.float('payment_amount').defaultTo(0);
+        table.string('payment_date');
         table.integer('court_id').unsigned().references('id').inTable('court').onDelete('CASCADE');
         table.integer('user_id').unsigned().references('id').inTable('user').onDelete('CASCADE');
         table.integer('org_id').unsigned().references('id').inTable('org').onDelete('CASCADE');
@@ -114,4 +117,3 @@ exports.up = function(knex) {
       .dropTableIfExists('court_type')
       .dropTableIfExists('org');
   };
-  

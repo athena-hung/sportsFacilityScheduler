@@ -18,7 +18,7 @@ const app = express();
 //allows connection from front end port
 const cors = require('cors');
 app.use(cors());
-const port = 3000;
+const port = 3001;
 
 //
 
@@ -35,7 +35,10 @@ app.get('/', (req, res) => {
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'yourSecretKey'
+  secretOrKey: 'yourSecretKey',
+  jsonWebTokenOptions: {
+    expiresIn: '30d'
+  }
 };
 
 // Passport JWT Strategy: Lookup user in the DB based on JWT payload

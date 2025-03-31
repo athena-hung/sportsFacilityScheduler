@@ -1,0 +1,409 @@
+{
+	"info": {
+		"_postman_id": "2022cea4-a2d0-4b21-86ca-e0c08eec8601",
+		"name": "Sports Scheduler - API Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9423098"
+	},
+	"item": [
+		{
+			"name": "{{sports_base_url}}/user/login - jane",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"jane@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sports_base_url}}/user/login",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/user/register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"address\": null,\n    \"birthdate\": null,\n    \"maxCourtsPerDay\": 3,\n    \"email\": \"test@test.com\",\n    \"password\": \"password\",\n    \"org_id\": 1,\n    \"member_type_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sports_base_url}}/user/register",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/user/profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sports_base_url}}/user/profile",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Available Courts with Filter",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sports_base_url}}/court/available?sport=Tennis&start_date=2025-05-05&end_date=2025-05-06&time=30&time_start=08:00&time_end=10:00&org_id=1",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"court",
+						"available"
+					],
+					"query": [
+						{
+							"key": "sport",
+							"value": "Tennis"
+						},
+						{
+							"key": "start_date",
+							"value": "2025-05-05"
+						},
+						{
+							"key": "end_date",
+							"value": "2025-05-06"
+						},
+						{
+							"key": "time",
+							"value": "30"
+						},
+						{
+							"key": "time_start",
+							"value": "08:00"
+						},
+						{
+							"key": "time_end",
+							"value": "10:00"
+						},
+						{
+							"key": "org_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Court Schedule for Day",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sports_base_url}}/court/1/schedule?date=2025-05-05&time=60",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"court",
+						"1",
+						"schedule"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2025-05-05"
+						},
+						{
+							"key": "time",
+							"value": "60"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sports_base_url}}/reservation",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"reservation"
+					],
+					"query": [
+						{
+							"key": "personId",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"start\":\"2025-05-05 12:00\",\n    \"end\":\"2025-05-05 13:00\",\n    \"reason\":\"Fun\",\n    \"notes\":\"Fun Times!\",\n    \"courtId\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sports_base_url}}/reservation",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/reservation/confirm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"reservationId\": 185,\n    \"paymentAmount\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sports_base_url}}/reservation/confirm",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"reservation",
+						"confirm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"start\":\"2025-05-12 10:00\",\n    \"end\":\"2025-05-12 11:00\",\n    \"reason\":\"Fun\",\n    \"notes\":\"Fun Times!\",\n    \"courtId\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sports_base_url}}/reservation",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sports_base_url}}/reservation/21",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sports_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"Cancelled\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sports_base_url}}/reservation/21",
+					"host": [
+						"{{sports_base_url}}"
+					],
+					"path": [
+						"reservation",
+						"21"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "sports_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJqYW5lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQzMzg5MjQ4LCJleHAiOjE3NDU5ODEyNDh9.WmxhXUydPpf8QHhmOIsT919tjui1918pEZ0Q10Yrm9Y",
+			"type": "default"
+		},
+		{
+			"key": "sports_base_url",
+			"value": "http://localhost:3001",
+			"type": "default"
+		}
+	]
+}

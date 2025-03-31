@@ -54,3 +54,4 @@ pnpm-lock.yaml
 /.history
 
 /backend/.env
+/backend/court-app/.env

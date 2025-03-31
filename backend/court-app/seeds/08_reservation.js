@@ -252,7 +252,6 @@ exports.seed = function(knex) {
         { start: '2025-05-03 12:00', end: '2025-05-03 14:00', reason: 'Practice', notes: null, court_id: 11, user_id: 5, org_id: 1, status: 'Confirmed' },
         { start: '2025-05-03 15:00', end: '2025-05-03 17:00', reason: 'Practice', notes: null, court_id: 11, user_id: 3, org_id: 1, status: 'Confirmed' }
 
-        
       ]);
     });
 };

@@ -18,7 +18,7 @@ const app = express();
 //allows connection from front end port
 const cors = require('cors');
 app.use(cors());
-const port = 3000;
+const port = 3001;
 
 //
 

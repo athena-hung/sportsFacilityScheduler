@@ -30,8 +30,8 @@ POSTGRESDB_DATABASE=court-reservation
 POSTGRESDB_LOCAL_PORT=5433
 POSTGRESDB_DOCKER_PORT=5432
 
-NODE_LOCAL_PORT=3000
-NODE_DOCKER_PORT=3000
+NODE_LOCAL_PORT=3001
+NODE_DOCKER_PORT=3001
 ```
 
 2. In the `/backend/court-app` directory, create a `.env` file with:
@@ -43,7 +43,7 @@ DB_PASSWORD=123456
 DB_NAME=court-reservation
 DB_PORT=5432
 
-NODE_DOCKER_PORT=3000
+NODE_DOCKER_PORT=3001
 ```
 
 You can use the `sample.env` files in the same directories as templates. Simply rename them to `.env` and modify the values as needed.
@@ -128,7 +128,7 @@ knex seed:run
 npm start
 ```
 
-Now, the server will run at http://localhost:3000/
+Now, the server will run at http://localhost:3001/
 
 Make API requests to the server to test (I recommend using [Postman](https://www.postman.com/))
 

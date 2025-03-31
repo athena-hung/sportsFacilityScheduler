@@ -1,0 +1,54 @@
+.payment-form {
+    background: #fff;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .form-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-input, .form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  
+  .form-section {
+    margin-top: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .form-button {
+    background-color: #16a34a;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  

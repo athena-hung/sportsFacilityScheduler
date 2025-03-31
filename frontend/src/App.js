@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import Login from './Login';
 import SignUp from './SignUp';
+import CancelBooking from "./CancelBooking";
+import BookingCancelled from "./BookingCancelled";
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PaymentForm from "./PaymentForm";
 
 function App() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -10,21 +14,33 @@ function App() {
   const toggleSignIn = () => setIsSignUp(false);
 
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>ParkPlay <span className="icon"></span></h1>
-        <h2>Court Reservations in seconds.</h2>
-      </header>
+    <Router>
+      <Routes>
+        {/* Default page = Login/SignUp toggle */}
+        <Route
+          path="/"
+          element={
+            <div className="app-container">
+              <header className="app-header">
+                <h1>ParkPlay <span className="icon"></span></h1>
+                <h2>Court Reservations in seconds.</h2>
+              </header>
 
-      <div className="login-container">
-        {/* Conditionally render login or sign-up form */}
-        {!isSignUp ? (
-          <Login onSignUpClick={toggleSignUp} />
-        ) : (
-          <SignUp onSignInClick={toggleSignIn} />
-        )}
-      </div>
-    </div>
+              <div className="login-container">
+                {!isSignUp ? (
+                  <Login onSignUpClick={toggleSignUp} />
+                ) : (
+                  <SignUp onSignInClick={toggleSignIn} />
+                )}
+              </div>
+            </div>
+          }
+        />
+        <Route path="/cancel-booking" element={<CancelBooking />} />
+        <Route path="/booking-cancelled" element={<BookingCancelled />} />
+      </Routes>
+    </Router>
+    //<PaymentForm />
   );
 }
 

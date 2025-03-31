@@ -20,11 +20,12 @@ exports.seed = async function(knex) {
 
       { firstName: 'John', lastName: 'Doe', address: null, birthdate: null, maxCourtsPerDay: 0, email: 'john@example.com', password: hashedPassword, org_id: 1, member_type_id: 3 },
 
-      { firstName: 'Jane', lastName: 'Smith', address: null, birthdate: '2016-10-21', maxCourtsPerDay: 2, email: 'jane@example.com', password: hashedPassword, org_id: 1, member_type_id: 4 },
+      { firstName: 'Jane', lastName: 'Smith', address: null, birthdate: '2016-10-21', maxCourtsPerDay: 5, email: 'jane@example.com', password: hashedPassword, org_id: 1, member_type_id: 4 },
 
       { firstName: 'Annie', lastName: 'Mason', address: '121 Spruce St', birthdate: null, maxCourtsPerDay: 5, email: 'annie@example.com', password: hashedPassword, org_id: 1, member_type_id: 5 },
       { firstName: 'Alex', lastName: 'Martin', address: null, birthdate: '1965-02-18', maxCourtsPerDay: 5, email: 'alex@example.com', password: hashedPassword, org_id: 1, member_type_id: 5 },
 
       { firstName: 'Joe', lastName: 'Davidson', address: '899 Fir St', birthdate: '1953-02-18', maxCourtsPerDay: 5, email: 'joe@example.com', password: hashedPassword, org_id: 1, member_type_id: 6 }
+
     ]);
   };

@@ -90,7 +90,6 @@ exports.seed = function(knex) {
         { dayOfWeek: 5, startTime: '08:00', endTime: '17:00', court_id: 11, org_id: 1 },
         { dayOfWeek: 6, startTime: '08:00', endTime: '17:00', court_id: 11, org_id: 1 },
         { dayOfWeek: 7, startTime: '08:00', endTime: '17:00', court_id: 11, org_id: 1 }
-        
       ]);
     });
 };

@@ -40,6 +40,13 @@ router.get('/', async (req, res) => {
       sort_order = 'asc'
     } = req.query;
 
+    // Use authenticated user's org_id if available and no org_id was specified in query
+    let effectiveOrgId = org_id;
+    if (!effectiveOrgId && req.user && req.user.org_id) {
+      effectiveOrgId = req.user.org_id;
+      console.log(`Using authenticated user's org_id: ${effectiveOrgId}`);
+    }
+
     // Validate and adjust pagination parameters
     const pageSize = Math.min(parseInt(limit) || DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE);
     const currentPage = Math.max(parseInt(page) || 1, 1);
@@ -126,6 +133,13 @@ router.get('/available', async (req, res) => {
       zip,        // Optional – zip code filter
       org_id      // Optional – organization filter
     } = req.query;
+    
+    // Use authenticated user's org_id if available and no org_id was specified in query
+    let effectiveOrgId = org_id;
+    if (!effectiveOrgId && req.user && req.user.org_id) {
+      effectiveOrgId = req.user.org_id;
+      console.log(`Using authenticated user's org_id: ${effectiveOrgId}`);
+    }
     
     // Validate required parameters.
     if (!sport) {
@@ -223,7 +237,7 @@ router.get('/available', async (req, res) => {
         .whereIn('court_court_type.court_type_id', courtTypeIds)
         .modify(function(queryBuilder) {
           if (zip) queryBuilder.where('court.zip', zip);
-          if (org_id) queryBuilder.where('court.org_id', org_id);
+          if (effectiveOrgId) queryBuilder.where('court.org_id', effectiveOrgId);
         });
       
       console.log(`Found ${courts.length} courts matching initial criteria:`, courts.map(c => `${c.id} (${c.court_name})`));

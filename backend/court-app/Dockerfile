@@ -11,7 +11,7 @@ RUN npm install --save-dev nodemon
 COPY . .
 
 # Expose the port the application will run on
-EXPOSE 3000
+EXPOSE 3001
 
 # Run the application in development mode with auto-reloading (nodemon)
 CMD ["sh", "-c", "npm run dev"]

@@ -64,7 +64,7 @@ function SignUp({ onSignInClick }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/user/register', {
+      const response = await axios.post('http://localhost:3001/user/register', {
         firstName: formData.username,
         lastName: 'Last', // You can adjust this when you update the form later
         address: '123 Street', // Optional hardcoded for now

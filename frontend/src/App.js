@@ -38,6 +38,7 @@ function App() {
         />
         <Route path="/cancel-booking" element={<CancelBooking />} />
         <Route path="/booking-cancelled" element={<BookingCancelled />} />
+        <Route path = "/payment" element = {<PaymentForm />} />
       </Routes>
     </Router>
     //<PaymentForm />

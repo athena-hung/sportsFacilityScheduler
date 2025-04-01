@@ -52,7 +52,7 @@ function Login({ onSignUpClick }) {
     setMessage('');
 
     try {
-      const res = await axios.post('http://localhost:3000/user/login', formData);
+      const res = await axios.post('http://localhost:3001/user/login', formData);
       const { token } = res.data;
 
       // Store token in localStorage

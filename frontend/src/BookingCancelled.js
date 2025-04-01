@@ -1,9 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./CSS/CancelBooking.css"; // Reuse existing styles
+import { useNavigate, useLocation } from "react-router-dom";
+import "./CSS/CancelBooking.css";
 
 export default function BookingCancelled() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { courtName, startTime, bookingId } = location.state || {};
 
   return (
     <div className="cancel-container">
@@ -14,9 +17,11 @@ export default function BookingCancelled() {
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <h3 className="cancel-title">Nickajack Park Court 3</h3>
-          <p className="cancel-subtitle">January 20, 2024 • 2:00 PM</p>
-          <p className="cancel-booking-id">Booking ID: FR163114</p>
+          <h3 className="cancel-title">{courtName || "Court"}</h3>
+          <p className="cancel-subtitle">
+            {startTime ? new Date(startTime).toLocaleString() : "Date/Time not available"}
+          </p>
+          <p className="cancel-booking-id">Booking ID: {bookingId || "N/A"}</p>
         </div>
 
         <hr style={{ margin: "16px 0", borderColor: "#eee" }} />

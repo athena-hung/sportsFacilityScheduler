@@ -6,6 +6,7 @@ import BookingCancelled from "./BookingCancelled";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PaymentForm from "./PaymentForm";
+import ConfirmedBookings from "./ConfirmedBookings";
 
 function App() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -39,6 +40,7 @@ function App() {
         <Route path="/cancel-booking" element={<CancelBooking />} />
         <Route path="/booking-cancelled" element={<BookingCancelled />} />
         <Route path = "/payment" element = {<PaymentForm />} />
+        <Route path = "/confirmed-bookings" element = {<ConfirmedBookings />} />
       </Routes>
     </Router>
     //<PaymentForm />

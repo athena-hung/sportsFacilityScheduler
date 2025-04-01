@@ -1,0 +1,96 @@
+.booking-details-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  .booking-details-container h2 {
+    font-size: 28px;
+    margin-bottom: 24px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .booking-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+  }
+  
+  .booking-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .booking-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .booking-court-image {
+    width: 160px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .court-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 6px;
+  }
+  
+  .booking-id,
+  .booking-card-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 2px 0;
+  }
+  
+  .booking-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+  }
+  
+  .cancel-booking-btn,
+  .download-receipt-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .cancel-booking-btn {
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #ccc;
+    margin-right: 12px;
+  }
+  
+  .cancel-booking-btn:hover {
+    background-color: #eee;
+  }
+  
+  .download-receipt-btn {
+    background-color: #34a853;
+    color: white;
+  }
+  
+  .download-receipt-btn:hover {
+    background-color: #2d9248;
+  }
+  

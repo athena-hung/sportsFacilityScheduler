@@ -7,6 +7,8 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PaymentForm from "./PaymentForm";
 import ConfirmedBookings from "./ConfirmedBookings";
+import CourtBooking from "./CourtBooking";
+import BookingDetails from "./BookingDetails";
 
 function App() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -37,8 +39,10 @@ function App() {
             </div>
           }
         />
+        <Route path="/court-booking" element={<CourtBooking />} />
         <Route path="/cancel-booking" element={<CancelBooking />} />
         <Route path="/booking-cancelled" element={<BookingCancelled />} />
+        <Route path="/booking-details" element={<BookingDetails />} />
         <Route path = "/payment" element = {<PaymentForm />} />
         <Route path = "/confirmed-bookings" element = {<ConfirmedBookings />} />
       </Routes>

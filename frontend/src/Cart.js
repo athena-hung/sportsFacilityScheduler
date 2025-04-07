@@ -49,9 +49,21 @@ const Cart = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "Not specified"
     try {
-      const date = new Date(dateString)
-      return date.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })
+      // Split the date string to handle it manually to avoid timezone issues
+      const [year, month, day] = dateString.split("-").map((num) => Number.parseInt(num, 10))
+
+      // Create a date object with the correct values
+      // Note: months are 0-indexed in JavaScript Date
+      const date = new Date(year, month - 1, day)
+
+      // Format the date using toLocaleDateString
+      return date.toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      })
     } catch (e) {
+      console.error("Error formatting date:", e, dateString)
       return dateString || "Not specified"
     }
   }

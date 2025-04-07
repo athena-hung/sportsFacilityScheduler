@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import courtImage from "../src/pics/Court_listing.png"
 import "./CourtBooking.css"
+import { useToast } from "./context/ToastContext" // Import useToast
 
 const CourtBooking = () => {
   const [location, setLocation] = useState("")
@@ -15,6 +16,7 @@ const CourtBooking = () => {
   const [cartCount, setCartCount] = useState(0)
 
   const navigate = useNavigate()
+  const { showToast } = useToast() // Use the toast hook
 
   // Sample location data (this could be dynamically fetched)
   const locations = ["New York", "Los Angeles", "Chicago", "San Francisco", "Miami"]
@@ -84,6 +86,24 @@ const CourtBooking = () => {
   ].filter((court) => !location || court.location.toLowerCase().includes(location.toLowerCase()))
 
   const handleBookCourt = (court) => {
+    // Validate required fields
+    if (!startDate) {
+      showToast("Please select a date before booking.", "error")
+      return
+    }
+    if (!startTime) {
+      showToast("Please select a start time before booking.", "error")
+      return
+    }
+    if (!endTime) {
+      showToast("Please specify an end time before booking.", "error")
+      return
+    }
+    if (!duration) {
+      showToast("Please specify a duration before booking.", "error")
+      return
+    }
+
     // Navigate to the BookingDetails page with the selected court and date/time details
     navigate("/booking-details", {
       state: {
@@ -100,27 +120,23 @@ const CourtBooking = () => {
   const handleAddToCart = (court) => {
     // Validate required fields
     if (!startDate) {
-      alert("Please select a date before adding to the cart.");
-      return;
+      showToast("Please select a date before adding to the cart.", "error")
+      return
     }
     if (!startTime) {
-      alert("Please select a start time before adding to the cart.");
-      return;
+      showToast("Please select a start time before adding to the cart.", "error")
+      return
     }
     if (!endTime) {
-      alert("Please specify an end time before adding to the cart.");
-      return;
+      showToast("Please specify an end time before adding to the cart.", "error")
+      return
     }
     if (!duration) {
-      alert("Please specify a duration before adding to the cart.");
-      return;
+      showToast("Please specify a duration before adding to the cart.", "error")
+      return
     }
 
-
-
     // Create a cart item with all necessary details
-
-
     const cartItem = {
       id: Date.now(), // Generate a unique ID
       courtId: court.id,
@@ -145,8 +161,8 @@ const CourtBooking = () => {
     // Update cart count
     setCartCount(updatedCart.length)
 
-    // Show confirmation to user
-    alert(`${court.name} has been added to your cart!`)
+    // Show confirmation to user using toast instead of alert
+    showToast(`${court.name} has been added to your cart!`, "success")
   }
 
   const navigateToCart = () => {

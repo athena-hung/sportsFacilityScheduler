@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import "./BookingDetails.css"
+import { useToast } from "./context/ToastContext" // Import useToast
 
 const BookingDetails = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [addedToCart, setAddedToCart] = useState(false)
+  const { showToast } = useToast() // Use the toast hook
 
   // Safely access the state and provide default values
   const state = location.state || {}
@@ -79,6 +81,9 @@ const BookingDetails = () => {
 
     // Update state to show success message
     setAddedToCart(true)
+
+    // Show toast notification
+    showToast("Added to cart successfully!", "success")
 
     // Automatically navigate to cart after a short delay
     setTimeout(() => {

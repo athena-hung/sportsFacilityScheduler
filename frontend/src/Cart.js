@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import "./CSS/Cart.css"
+import { useToast } from "./context/ToastContext" // Import useToast
 
 const Cart = () => {
   const navigate = useNavigate()
   const [cartItems, setCartItems] = useState([])
   const [totalAmount, setTotalAmount] = useState(0)
+  const { showToast } = useToast() // Use the toast hook
 
   // Fetch cart items from local storage
   useEffect(() => {
@@ -30,6 +32,9 @@ const Cart = () => {
     // Recalculate total
     const total = updatedCart.reduce((sum, item) => sum + item.price, 0)
     setTotalAmount(total)
+
+    // Show toast notification
+    showToast("Item removed from cart", "info")
   }
 
   const handleProceedToCheckout = () => {

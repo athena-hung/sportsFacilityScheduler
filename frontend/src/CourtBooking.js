@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import courtImage from "../src/pics/Court_listing.png"
+import courtNorth from "../src/pics/northpark.png"
 import "./CourtBooking.css"
 import { useToast } from "./context/ToastContext" // Import useToast
 
@@ -69,20 +70,13 @@ const CourtBooking = () => {
     },
     {
       id: 2,
-      location: "New York",
-      name: "Central Park Tennis",
+      location: "Alpharetta",
+      name: "North Park Pickleball",
       rating: 4.5,
-      image: courtImage,
+      image: courtNorth,
       price: 30.0,
     },
-    {
-      id: 3,
-      location: "Los Angeles",
-      name: "Venice Beach Courts",
-      rating: 4.2,
-      image: courtImage,
-      price: 28.0,
-    },
+    ,
   ].filter((court) => !location || court.location.toLowerCase().includes(location.toLowerCase()))
 
   const handleBookCourt = (court) => {

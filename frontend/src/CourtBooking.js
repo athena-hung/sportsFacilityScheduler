@@ -235,7 +235,7 @@ const CourtBooking = () => {
               <img src={court.image || "/placeholder.svg"} alt={court.name} className="court-image" />
               <div className="court-info">
                 <p className="court-name">
-                  {court.name} ★ {court.rating}
+                  {court.name} <span className="star-icon">★</span> {court.rating}
                 </p>
                 <p className="court-price">${court.price.toFixed(2)} per hour</p>
                 <div className="court-buttons">

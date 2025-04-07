@@ -77,6 +77,9 @@ h3 {
   margin-bottom: 15px;
   transition: all 0.3s ease;
 }
+.star-icon {
+  color: #26c031; /* Green color */
+}
 
 /* Adding focus effect */
 .input-group input:focus {
@@ -165,6 +168,7 @@ h3 {
   font-size: 0.9rem;
   flex: 1;
   transition: all 0.3s ease;
+  font-weight: bold;
 }
 
 .add-to-cart-btn:hover {
@@ -181,6 +185,7 @@ h3 {
   font-size: 0.9rem;
   flex: 1;
   transition: all 0.3s ease;
+  font-weight: bold;
 }
 
 .book-court-btn:hover {
@@ -205,5 +210,6 @@ h3 {
   .search-filters .input-group {
     max-width: 100%;
   }
+
 }
 

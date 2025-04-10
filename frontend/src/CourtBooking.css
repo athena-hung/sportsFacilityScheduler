@@ -1,30 +1,36 @@
 /* Basic container setup */
 .court-booking-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 30px;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
-/* Booking header with cart icon */
-.booking-header {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ /* Booking header with cart icon - Added from branch */
+ .booking-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.cart-icon-container {
+ }
+ 
+ 
+ .cart-icon-container {
   position: relative;
   cursor: pointer;
-}
-
-.cart-icon {
+ }
+ 
+ 
+ .cart-icon {
   font-size: 24px;
-}
-
-.cart-count {
+ }
+ 
+ 
+ .cart-count {
   position: absolute;
   top: -8px;
   right: -8px;
@@ -38,178 +44,206 @@
   justify-content: center;
   font-size: 12px;
   font-weight: bold;
-}
-
-/* Heading Styles */
-h2 {
+ }
+ 
+ 
+ /* Heading Styles */
+ h2 {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
   color: #2c3e50;
-}
-
-h3 {
+ }
+ 
+ 
+ h3 {
   font-size: 1.5rem;
   margin-bottom: 20px;
   color: #2c3e50;
-}
-
-/* Location Filter */
-.input-group {
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 25px; /* Increased margin for more space between text boxes */
-}
-
-.input-group label {
-  font-size: 1rem;
-  display: block;
-  margin-bottom: 8px;
-  color: #7f8c8d;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 12px;
+ }
+ 
+ 
+ .input-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+ }
+ 
+ 
+ .input-group label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+ }
+ 
+ 
+ .input-group input {
+  padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 1rem;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
-}
-.star-icon {
-  color: #26c031; /* Green color */
-}
-
-/* Adding focus effect */
-.input-group input:focus {
+  font-size: 14px;
+ }
+ 
+ 
+ /* Adding focus effect - Added from branch */
+ .input-group input:focus {
   border-color: #3498db;
   outline: none;
-}
-
-/* Search Filters Section */
-.search-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px; /* Increased gap between form fields */
-  margin-bottom: 40px;
-}
-
-.search-filters .input-group {
-  width: 100%;
-  max-width: 250px;
-}
-
-.search-filters .input-group input {
-  padding: 12px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-/* Court Listing Section */
-.court-listing {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-top: 20px;
-}
-
-.court-item {
-  width: 100%;
-  max-width: 350px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.court-item:hover {
-  transform: scale(1.05);
-}
-
-.court-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  
-}
-
-.court-info {
-  padding: 15px;
-  background-color: #f9f9f9;
-}
-
-.court-name {
-  font-size: 1rem;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.court-price {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 15px;
-}
-
-.court-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.add-to-cart-btn {
-  background-color: white;
-  border: 1px solid #26c031;
-  color: #26c031;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  flex: 1;
-  transition: all 0.3s ease;
-  font-weight: bold;
-}
-
-.add-to-cart-btn:hover {
-  background-color: #f0f9f0;
-}
-
-.book-court-btn {
-  background-color: #26c031;
+ }
+ 
+ 
+ /* Star icon - Added from branch */
+ .star-icon {
+  color: #26c031; /* Green color */
+ }
+ 
+ 
+ .search-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+ }
+ 
+ 
+ .search-courts-btn {
+  background-color: #28a745;
   color: white;
-  padding: 8px 15px;
+  padding: 10px 20px;
+  font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  height: 40px;
+  width: auto;
+  transition: background-color 0.3s ease;
+ }
+ 
+ 
+ .search-courts-btn:hover {
+  background-color: #218838;
+ }
+ 
+ 
+ .court-listing {
+  margin-top: 30px;
+ }
+ 
+ 
+ .court-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: transform 0.3s ease; /* Added from branch */
+ }
+ 
+ 
+ /* Hover effect - Added from branch */
+ .court-item:hover {
+  transform: scale(1.02);
+ }
+ 
+ 
+ .court-image {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 16px;
+  border-radius: 6px;
+ }
+ 
+ 
+ .court-info p {
+  margin: 4px 0;
+ }
+ 
+ 
+ /* Court name - Added from branch */
+ .court-name {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  font-weight: bold;
+ }
+ 
+ 
+ /* Court price - Added from branch */
+ .court-price {
   font-size: 0.9rem;
-  flex: 1;
+  color: #666;
+  margin-bottom: 15px;
+ }
+ 
+ 
+ /* Court buttons container - Added from branch */
+ .court-buttons {
+  display: flex;
+  gap: 10px;
+ }
+ 
+ 
+ /* Add to cart button - Added from branch */
+ .add-to-cart-btn {
+  background-color: white;
+  border: 1px solid #26c031;
+  color: #26c031;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 14px;
   transition: all 0.3s ease;
   font-weight: bold;
-}
-
-.book-court-btn:hover {
+ }
+ 
+ 
+ .add-to-cart-btn:hover {
+  background-color: #f0f9f0;
+ }
+ 
+ 
+ .book-court-btn {
+  background-color: #26c031;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+ }
+ 
+ 
+ .book-court-btn:hover {
   background-color: #218838;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
+ }
+ 
+ 
+ /* Responsive adjustments - Added from branch */
+ @media (max-width: 768px) {
   .court-listing {
     justify-content: center;
   }
-
+ 
+ 
   .court-item {
-    max-width: 100%;
-  }
-
-  .search-filters {
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-start;
   }
-
-  .search-filters .input-group {
-    max-width: 100%;
+ 
+ 
+  .court-image {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
-
-}
-
+ 
+ 
+  .search-filters {
+    grid-template-columns: 1fr;
+  }
+ }
+ 

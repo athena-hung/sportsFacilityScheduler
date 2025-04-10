@@ -95,7 +95,7 @@
 }
 
 .back-button,
-.add-to-cart-btn,
+.add-to-cart-btncb,
 .confirm-booking-btn {
   padding: 12px 25px;
   font-size: 16px;
@@ -111,7 +111,7 @@
   border: none;
 }
 
-.add-to-cart-btn {
+.add-to-cart-btncb {
   background-color: white;
   border: 1px solid #26c031;
   color: #26c031;
@@ -127,7 +127,7 @@
   background-color: #d6d6d6;
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btncb:hover {
   background-color: #f0f9f0;
 }
 
@@ -135,7 +135,7 @@
   background-color: #218838;
 }
 
-.add-to-cart-btn:disabled {
+.add-to-cart-btncb:disabled {
   background-color: #f0f0f0;
   color: #999;
   border-color: #ccc;
@@ -171,7 +171,7 @@
   }
 
   .back-button,
-  .add-to-cart-btn,
+  .add-to-cart-btncb,
   .confirm-booking-btn {
     width: 100%;
   }

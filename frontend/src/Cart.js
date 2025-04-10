@@ -117,7 +117,7 @@ const Cart = () => {
                   <h3>{item.name}</h3>
                   <p className="item-date">{formatDate(item.date)}</p>
                   <p className="item-time">
-                    {formatTime(item.startTime)} - {formatTime(item.endTime)}
+                    {formatTime(item.startTime)} to {formatTime(item.endTime)}
                   </p>
                   <p className="item-duration">Duration: {item.duration} minutes</p>
                 </div>

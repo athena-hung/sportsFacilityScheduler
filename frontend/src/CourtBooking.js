@@ -85,7 +85,7 @@ const CourtBooking = () => {
      const token = localStorage.getItem("token");
      if (!token) {
        showToast("You must be logged in to search for courts", "error");
-       navigate("/login");
+       navigate("/#");
        return;
      }
 

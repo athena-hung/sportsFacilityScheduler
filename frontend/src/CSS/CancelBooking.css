@@ -1,140 +1,123 @@
-/* CancelBooking.css */
 .cancel-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f9f9f9;
-    padding: 20px;
-  }
-  
-  .cancel-card {
-    background-color: #fff;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-  }
-  
-  .cancel-back-button {
-    background: none;
-    border: none;
-    color: #555;
-    margin-bottom: 12px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .cancel-header-section {
-    display: flex;
-    margin-bottom: 16px;
-    gap: 12px;
-  }
-  
-  .cancel-image {
-    width: 100px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .cancel-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .cancel-subtitle {
-    font-size: 14px;
-    margin: 4px 0;
-    color: #666;
-  }
-  
-  .cancel-booking-id {
-    font-size: 12px;
-    color: #aaa;
-  }
-  
-  .cancel-question {
-    font-size: 15px;
-    font-weight: 600;
-    margin: 16px 0 8px;
-  }
-  
-  .cancel-notes {
-    font-size: 14px;
-    color: #555;
-    padding-left: 16px;
-    margin-bottom: 16px;
-  }
-  
-  .cancel-label {
-    font-size: 14px;
-    margin-bottom: 4px;
-    display: block;
-    font-weight: 500;
-  }
-  
-  .cancel-textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    min-height: 80px;
-    resize: vertical;
-  }
-  
-  .cancel-button-row {
-    margin-top: 16px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-  }
-  
-  .cancel-keep-button {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .cancel-cancel-button {
-    background-color: #16a34a;
-    border: none;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .cancel-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  
-  .cancel-success-icon {
-    font-size: 20px;
-  }
-  
-  .cancel-confirm-text {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 12px;
-  }
-  
-  .cancel-whats-next {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 20px;
-  }
-  
-  .cancel-bullet-list {
-    padding-left: 20px;
-    margin-top: 8px;
-    line-height: 1.6;
-  }
-  
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.cancel-card {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+}
+
+.cancel-title-page {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.cancel-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.cancel-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.cancel-card-inner {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.cancel-header-section {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.cancel-image {
+  width: 130px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cancel-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 6px;
+}
+
+.cancel-subtitle {
+  font-size: 14px;
+  margin: 2px 0;
+  color: #555;
+}
+
+.cancel-warning {
+  font-size: 14px;
+  margin-top: 16px;
+  color: #333;
+}
+
+.cancel-bullet-list {
+  padding-left: 20px;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.cancel-textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-height: 80px;
+  resize: vertical;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.cancel-button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cancel-keep-button {
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-cancel-button {
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-cancel-button:hover {
+  background-color: #12813a;
+}

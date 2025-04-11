@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./BookingDetails.css";
+import courtImage from '/Users/anishbommireddy/java/sportsFacilityScheduler/frontend/src/pics/Court_listing.png';
 
 const BookingDetails = () => {
   const location = useLocation();
@@ -60,19 +61,8 @@ const BookingDetails = () => {
         throw new Error(data.message || "Failed to create reservation");
       }
 
-      // Navigate to payment with reservation info
-      navigate("/payment", {
-        state: {
-          reservationId: data.reservation.id,
-          court,
-          startDate,
-          endDate,
-          startTime,
-          endTime,
-          duration,
-          price: data.reservation.price
-        },
-      });
+      // ✅ Navigate to cart page instead of payment
+      navigate("/cart");
     } catch (err) {
       console.error("Error creating reservation:", err);
       alert(`Error: ${err.message}`);
@@ -84,7 +74,7 @@ const BookingDetails = () => {
       <h2 className="booking-title">Booking Details</h2>
       <div className="court-details">
         <img
-          src={court.image || "https://images.unsplash.com/photo-1599058917212-d750089bc2be?w=500&q=80"}
+          src={court.image || courtImage}
           alt={court.court_name || "Court"}
           className="court-image"
         />

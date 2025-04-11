@@ -1,122 +1,151 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./CSS/CancelBooking.css";
-import { useNavigate } from "react-router-dom";
+import courtImage from '/Users/anishbommireddy/java/sportsFacilityScheduler/frontend/src/pics/Court_listing.png';
 
 export default function CancelBooking() {
   const [reservations, setReservations] = useState([]);
-  const [selectedReservation, setSelectedReservation] = useState("");
-  const [reason, setReason] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
   const [token, setToken] = useState("");
+  const [courtNames, setCourtNames] = useState({});
+  const [reason, setReason] = useState("");
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const preselected = location.state?.bookingId || null;
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
+    const fetchReservations = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) return;
       setToken(storedToken);
-      fetchReservations(storedToken);
-    }
-  }, []);
 
-  const fetchReservations = async (authToken) => {
-    try {
-      const response = await axios.get("http://localhost:3001/reservation?status=Confirmed", {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      setReservations(response.data);
-    } catch (err) {
-      console.error("Error fetching reservations:", err);
-    }
+      try {
+        const res = await axios.get("http://localhost:3001/reservation", {
+          headers: { Authorization: `Bearer ${storedToken}` },
+          params: { status: "Confirmed" },
+        });
+
+        const bookings = res.data;
+        setReservations(bookings);
+        if (preselected) setSelectedId(preselected);
+
+        const courtData = {};
+        for (const booking of bookings) {
+          const courtRes = await axios.get(`http://localhost:3001/court/${booking.court_id}`, {
+            headers: { Authorization: `Bearer ${storedToken}` },
+          });
+          courtData[booking.court_id] = courtRes.data.name;
+        }
+        setCourtNames(courtData);
+      } catch (err) {
+        console.error("Error loading reservations:", err);
+      }
+    };
+
+    fetchReservations();
+  }, [preselected]);
+
+  const selected = reservations.find((r) => r.id === Number(selectedId));
+
+  const formatDateRange = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    return `${startDate.toLocaleDateString(undefined, options)} from ${startDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })} to ${endDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
   };
 
   const handleCancel = async () => {
-    if (!selectedReservation) return alert("Select a reservation first.");
-
     try {
       await axios.put(
-        `http://localhost:3001/reservation/${selectedReservation}`,
+        `http://localhost:3001/reservation/${selectedId}`,
         { status: "Cancelled", notes: reason },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Reservation cancelled.");
-      navigate("/booking-cancelled", {
-        state: {
-          courtName: `Court ${selected.court_id}`,
-          startTime: selected.start,
-          bookingId: selected.id,
-        },
-      });
-      
+      alert("Reservation cancelled successfully.");
+      navigate("/confirmed-bookings");
     } catch (err) {
-      console.error("Error cancelling reservation:", err);
+      console.error("Cancellation failed:", err);
       alert("Failed to cancel reservation.");
     }
   };
 
-  const handleKeep = () => {
-    alert("Booking kept.");
-  };
-
-  const selected = reservations.find((r) => r.id === parseInt(selectedReservation));
-
   return (
     <div className="cancel-container">
       <div className="cancel-card">
-        <button className="cancel-back-button" onClick={handleKeep}>
-          ← Back
-        </button>
+        <h2 className="cancel-title-page">Cancel a Reservation</h2>
 
-        <h2 className="cancel-title">Cancel a Reservation</h2>
         <label className="cancel-label">Select Reservation:</label>
         <select
-          className="form-select"
-          value={selectedReservation}
-          onChange={(e) => setSelectedReservation(e.target.value)}
+          className="cancel-select"
+          value={selectedId || ""}
+          onChange={(e) => setSelectedId(e.target.value)}
         >
           <option value="">-- Select --</option>
-          {reservations.map((res) => (
-            <option key={res.id} value={res.id}>
-              #{res.id} - Court {res.court_id} on {res.start}
+          {reservations.map((r) => (
+            <option key={r.id} value={r.id}>
+              {courtNames[r.court_id] || `Court ${r.court_id}`} on {new Date(r.start).toLocaleDateString()} at{" "}
+              {new Date(r.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
             </option>
           ))}
         </select>
 
         {selected && (
-          <>
-            <div className="cancel-details">
-              <p><strong>Time:</strong> {selected.start} to {selected.end}</p>
-              <p><strong>Reason:</strong> {selected.reason || "N/A"}</p>
-              <p><strong>Status:</strong> {selected.status}</p>
+          <div className="cancel-card-inner">
+            <div className="cancel-header-section">
+              <img
+                src={courtImage}
+                alt="Court"
+                className="cancel-image"
+              />
+              <div>
+                <h3 className="cancel-title">{courtNames[selected.court_id]}</h3>
+                <p className="cancel-subtitle">
+                  <strong>Time:</strong> {formatDateRange(selected.start, selected.end)}
+                </p>
+                <p className="cancel-subtitle">
+                  <strong>Reason:</strong> {selected.reason}
+                </p>
+                <p className="cancel-subtitle">
+                  <strong>Status:</strong> {selected.status}
+                </p>
+              </div>
             </div>
 
-            <h3 className="cancel-question">Are you sure you want to cancel this booking?</h3>
-            <ul className="cancel-notes">
-              <li>Cancellation fee may apply</li>
-              <li>This action cannot be undone</li>
-              <li>Refund will be processed within 5–7 business days</li>
-            </ul>
+            <hr />
+
+            <div className="cancel-warning">
+              <p><strong>Total Amount:</strong> ${selected.price || 0}</p>
+              <ul className="cancel-bullet-list">
+                <li>Cancellation fee may apply</li>
+                <li>This action cannot be undone</li>
+                <li>Refund will be processed within 5–7 business days</li>
+              </ul>
+            </div>
 
             <label className="cancel-label">Reason for cancellation (optional)</label>
             <textarea
+              className="cancel-textarea"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              className="cancel-textarea"
-            ></textarea>
+              placeholder="Reason for cancellation"
+            />
 
             <div className="cancel-button-row">
-              <button onClick={handleKeep} className="cancel-keep-button">
+              <button className="cancel-keep-button" onClick={() => navigate("/confirmed-bookings")}>
                 No, Keep Booking
               </button>
-              <button onClick={handleCancel} className="cancel-cancel-button">
+              <button className="cancel-cancel-button" onClick={handleCancel}>
                 Yes, Cancel Booking
               </button>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
   );
 }
-

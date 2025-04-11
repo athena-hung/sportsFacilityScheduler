@@ -38,7 +38,7 @@ export default function BookingCancelled() {
         </div>
 
         <div className="cancel-button-row">
-          <button onClick={() => navigate("/")} className="cancel-cancel-button">
+          <button onClick={() => navigate("/court-booking")} className="cancel-cancel-button">
             Done
           </button>
         </div>

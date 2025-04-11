@@ -9,6 +9,7 @@ import PaymentForm from "./PaymentForm";
 import ConfirmedBookings from "./ConfirmedBookings";
 import CourtBooking from "./CourtBooking";
 import BookingDetails from "./BookingDetails";
+import Cart from "./Cart.js";
 
 function App() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -45,6 +46,7 @@ function App() {
         <Route path="/booking-details" element={<BookingDetails />} />
         <Route path = "/payment" element = {<PaymentForm />} />
         <Route path = "/confirmed-bookings" element = {<ConfirmedBookings />} />
+        <Route path = "/cart" element = {<Cart />} />
       </Routes>
     </Router>
     //<PaymentForm />

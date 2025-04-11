@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CSS/ConfirmedBookings.css";
 import { useNavigate } from "react-router-dom";
+import courtImage from '/Users/anishbommireddy/java/sportsFacilityScheduler/frontend/src/pics/Court_listing.png';
 
 export default function ConfirmedBookings() {
   const [bookings, setBookings] = useState([]);
@@ -89,7 +90,7 @@ export default function ConfirmedBookings() {
           <div className="booking-card" key={booking.id}>
             <div className="booking-card-header">
               <img
-                src="https://images.unsplash.com/photo-1599058917212-d750089bc2be?w=500&q=80"
+                src={courtImage}
                 alt="Court"
                 className="booking-court-image"
               />

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_DOMAIN } from './config';
+import './styles/auth.css';
 
 function Login({ onSignUpClick }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -19,7 +21,7 @@ function Login({ onSignUpClick }) {
     setMessage('');
 
     try {
-      const res = await axios.post('http://localhost:3001/user/login', formData);
+      const res = await axios.post(`${API_DOMAIN}/user/login`, formData);
       const { token } = res.data;
 
       // ✅ Save token to localStorage

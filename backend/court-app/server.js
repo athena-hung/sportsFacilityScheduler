@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const reservationRouter = require('./requests/reservation');
 const courtRouter = require('./requests/court');
 const userRouter = require('./requests/user');
+const courtTypeRouter = require('./requests/court_type');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -69,6 +70,7 @@ app.get('/login', (req, res) => {
 // Mount protected routes
 app.use('/reservation', passport.authenticate('jwt', { session: false }), reservationRouter);
 app.use('/court', passport.authenticate('jwt', { session: false }), courtRouter);
+app.use('/court-type', passport.authenticate('jwt', { session: false }), courtTypeRouter);
 
 // Mount user routes (registration, login, profile)
 app.use('/user', userRouter);

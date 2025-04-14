@@ -37,6 +37,8 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_DOMAIN } from './config';
+import './styles/auth.css';
 
 function SignUp({ onSignInClick }) {
   const [formData, setFormData] = useState({
@@ -64,7 +66,7 @@ function SignUp({ onSignInClick }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/user/register', {
+      const response = await axios.post(`${API_DOMAIN}/user/register`, {
         firstName: formData.username,
         lastName: 'Last', // You can adjust this when you update the form later
         address: '123 Street', // Optional hardcoded for now

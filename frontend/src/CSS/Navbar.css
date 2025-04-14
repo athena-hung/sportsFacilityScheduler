@@ -14,66 +14,12 @@
     gap: 10px;
   }
   
-  .navbar-logo {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .navbar-title {
-    font-weight: 500;
-    font-size: 18px;
-    color: #0077cc;
-  }
-  
-  .navbar-center {
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    flex: 1;
-  }
-  
-  .navbar-center a {
+  .navbar-brand {
     text-decoration: none;
-    color: black;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  
-  .navbar-center a:hover {
-    color: #0077cc;
-  }
-  
-  .navbar-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  .signout-btn {
-    background-color: transparent;
-    border: 1px solid #ccc;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  .signout-btn:hover {
-    background-color: #eee;
-  }
-  .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 10px 24px;
-    font-family: 'Inter', sans-serif;
-  }
-  
-  .navbar-left {
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
   }
   
   .navbar-logo {
@@ -121,5 +67,56 @@
   
   .signout-btn:hover {
     background-color: #eee;
+  }
+
+  /* Mobile menu button */
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  /* Media queries for mobile responsiveness */
+  @media screen and (max-width: 768px) {
+    .navbar {
+      padding: 10px 16px;
+    }
+
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .navbar-center {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .navbar-center.active {
+      display: flex;
+    }
+
+    .navbar-center a {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .navbar-center a:last-child {
+      border-bottom: none;
+    }
+
+    .navbar-right {
+      margin-left: auto;
+    }
   }
     

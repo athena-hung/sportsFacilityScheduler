@@ -92,10 +92,16 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Check if court exists
-    const court = await db('court').where({ id: courtId }).first();
+    // Check if court exists and belongs to user's organization
+    const court = await db('court')
+      .where({ 
+        id: courtId,
+        org_id: user.org_id 
+      })
+      .first();
+    
     if (!court) {
-      return res.status(404).json({ message: 'Court not found' });
+      return res.status(404).json({ message: 'Court not found or does not belong to your organization' });
     }
 
     // Get court type to check maxReservationTime
@@ -232,6 +238,7 @@ router.post('/', async (req, res) => {
       notes: notes || null,
       court_id: courtId,
       user_id: reservationUserId,
+      org_id: user.org_id,
       status: isAdmin ? (status || 'Confirmed') : 'Pending',
       price: price
     }).returning('*');

@@ -94,3 +94,41 @@
     background-color: #2d9248;
   }
   
+  /* Media queries for mobile responsiveness */
+  @media screen and (max-width: 768px) {
+    .booking-details-container {
+      padding: 10px;
+      margin: 20px auto;
+    }
+
+    .booking-card-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .booking-court-image {
+      width: 120px;
+      height: 80px;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .booking-footer {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .booking-footer button {
+      width: auto;
+      margin: 0;
+    }
+
+    .cancel-booking-btn {
+      margin-right: 8px;
+    }
+  }
+  

@@ -1,72 +1,181 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_DOMAIN } from "./config";
 import "./BookingDetails.css";
-import courtImage from '/Users/anishbommireddy/java/sportsFacilityScheduler/frontend/src/pics/Court_listing.png';
+import courtImage from './pics/Court_listing.png';
 
 const BookingDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const state = location.state || {};
   const {
     court = {},
     startDate = "",
     endDate = "",
-    startTime = "",
-    endTime = "",
-    duration = ""
+    startTime: initialStartTime = "",
+    endTime: initialEndTime = "",
+    duration = "60",
+    // Preserve all search parameters
+    sport = "",
+    location: searchLocation = ""
   } = state;
+
+  // Helper function to check if a time is within the preferred window
+  const isTimeWithinWindow = (time) => {
+    if (!initialStartTime || !initialEndTime) return true;
+    
+    // Convert all times to minutes since midnight for easier comparison
+    const [startHours, startMinutes] = initialStartTime.split(':').map(Number);
+    const [endHours, endMinutes] = initialEndTime.split(':').map(Number);
+    const [timeHours, timeMinutes] = time.split(':').map(Number);
+    
+    const startInMinutes = startHours * 60 + startMinutes;
+    const endInMinutes = endHours * 60 + endMinutes;
+    const timeInMinutes = timeHours * 60 + timeMinutes;
+    
+    // Handle cases where end time is on the next day (e.g., "22:00 - 02:00")
+    if (endInMinutes < startInMinutes) {
+      return timeInMinutes >= startInMinutes || timeInMinutes <= endInMinutes;
+    }
+    
+    // Include times that match either the start or end time using inclusive comparison
+    return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
+  };
+
+  // Filter available slots based on time window
+  const filteredAvailableSlots = availableSlots.filter(isTimeWithinWindow);
+
+  const handleBackToListing = () => {
+    navigate('/court-booking', {
+      state: {
+        // Pass back all search parameters
+        sport,
+        location: searchLocation,
+        startDate,
+        endDate,
+        startTime: initialStartTime,
+        endTime: initialEndTime,
+        duration,
+        preserveSearch: true // Flag to indicate we should restore the search
+      }
+    });
+  };
+
+  useEffect(() => {
+    const fetchAvailableSlots = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+
+        // First fetch user profile to check booking limits
+        const userResponse = await fetch(`${API_DOMAIN}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!userResponse.ok) {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        const userData = await userResponse.json();
+        const userBookingsResponse = await fetch(`${API_DOMAIN}/reservation`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            status: "",
+          },
+        });
+
+        if (!userBookingsResponse.ok) {
+          throw new Error("Failed to fetch user bookings");
+        }
+
+        const userBookings = await userBookingsResponse.json();
+        const activeBookings = userBookings.filter(booking => 
+          booking.status !== 'Cancelled' && new Date(booking.start) >= new Date()
+        );
+
+        if (activeBookings.length >= userData.user.maxCourtsPerDay) {
+          setError(`You have reached your maximum limit of ${userData.user.maxCourtsPerDay} future reservations`);
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`${API_DOMAIN}/court/${court.id}/schedule?date=${startDate}&time=${duration}&time_start=${initialStartTime}&time_end=${initialEndTime}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch available slots");
+        }
+
+        const data = await response.json();
+        setAvailableSlots(data.available_start_times || []);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching available slots:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (court.id && startDate) {
+      fetchAvailableSlots();
+    }
+  }, [court.id, startDate, duration, initialStartTime, initialEndTime]);
 
   if (!court || !court.id) {
     return (
       <div className="booking-details-container">
         <h2>Error: Missing Court Information</h2>
         <p>Please select a court from the court listing first.</p>
-        <button className="back-button" onClick={() => navigate('/court-booking')}>
+        <button className="back-button" onClick={handleBackToListing}>
           Return to Court Listing
         </button>
       </div>
     );
   }
 
-  const handleConfirmBooking = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("You must be logged in to make a reservation.");
-        return;
-      }
-
-      const startDateTime = `${startDate}T${startTime}`;
-      const endDateTime = `${endDate}T${endTime}`;
-
-      const response = await fetch("http://localhost:3001/reservation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          start: startDateTime,
-          end: endDateTime,
-          courtId: court.id,
-          reason: "User initiated from booking flow",
-          status: "Pending"
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to create reservation");
-      }
-
-      // ✅ Navigate to cart page instead of payment
-      navigate("/cart");
-    } catch (err) {
-      console.error("Error creating reservation:", err);
-      alert(`Error: ${err.message}`);
+  const handleTimeSelect = async (startTime) => {
+    if (error && error.includes("maximum limit")) {
+      return; // Don't proceed if user has reached their booking limit
     }
+    
+    setSelectedTime(startTime);
+    
+    // Calculate end time based on duration
+    const [hours, minutes] = startTime.split(':');
+    const startDateTime = new Date();
+    startDateTime.setHours(parseInt(hours), parseInt(minutes));
+    const endDateTime = new Date(startDateTime.getTime() + parseInt(duration) * 60000);
+    const endTime = `${String(endDateTime.getHours()).padStart(2, '0')}:${String(endDateTime.getMinutes()).padStart(2, '0')}`;
+
+    // Instead of creating reservation, store the info and navigate to cart
+    const reservationInfo = {
+      start: `${startDate}T${startTime}`,
+      end: `${startDate}T${endTime}`,
+      courtId: court.id,
+      court_name: court.court_name,
+      price: court.price || 0,
+      org_name: court.org_name
+    };
+
+    // Navigate to cart with reservation info
+    navigate("/cart", { 
+      state: { 
+        pendingReservation: reservationInfo
+      },
+      replace: true
+    });
   };
 
   return (
@@ -87,19 +196,46 @@ const BookingDetails = () => {
 
       <div className="booking-info">
         <h3 className="section-title">Reservation Details</h3>
-        <p><strong>Start Date:</strong> {startDate}</p>
-        <p><strong>End Date:</strong> {endDate}</p>
-        <p><strong>Start Time:</strong> {startTime}</p>
-        <p><strong>End Time:</strong> {endTime}</p>
+        <p><strong>Date:</strong> {startDate}</p>
         <p><strong>Duration:</strong> {duration} minutes</p>
+        <p><strong>Preferred Time Window:</strong> {initialStartTime} - {initialEndTime}</p>
+      </div>
+
+      <div className="time-slots-section">
+        <h3 className="section-title">Available Time Slots</h3>
+        {loading ? (
+          <p>Loading available time slots...</p>
+        ) : error ? (
+          <div className="error-message-container">
+            <p className="error-message">{error}</p>
+            {error.includes("maximum limit") && (
+              <p className="error-help-text">
+                Please cancel some of your existing reservations before making new ones.
+                You can manage your reservations in the <a href="/confirmed-bookings">Confirmed Bookings</a> page.
+              </p>
+            )}
+          </div>
+        ) : filteredAvailableSlots.length === 0 ? (
+          <p>No available time slots within your preferred time window ({initialStartTime} - {initialEndTime}).</p>
+        ) : (
+          <div className="time-slots-grid">
+            {filteredAvailableSlots.map((time) => (
+              <button
+                key={time}
+                className={`time-slot-btn ${selectedTime === time ? 'selected' : ''}`}
+                onClick={() => handleTimeSelect(time)}
+                disabled={error && error.includes("maximum limit")}
+              >
+                {time}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="action-buttons">
-        <button className="back-button" onClick={() => navigate("/court-booking")}>
+        <button className="back-button" onClick={handleBackToListing}>
           Back to Court Listing
-        </button>
-        <button className="confirm-booking-btn" onClick={handleConfirmBooking}>
-          Confirm Booking
         </button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { API_DOMAIN } from "./config";
 import "./CSS/PaymentForm.css";
 
 export default function PaymentForm() {
@@ -22,7 +23,7 @@ export default function PaymentForm() {
 
   const fetchPendingReservations = async (authToken) => {
     try {
-      const response = await axios.get("http://localhost:3001/reservation", {
+      const response = await axios.get(`${API_DOMAIN}/reservation`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -41,7 +42,7 @@ export default function PaymentForm() {
       const uniqueCourtIds = [...new Set(filtered.map((r) => r.court_id))];
       const names = {};
       for (const id of uniqueCourtIds) {
-        const courtRes = await axios.get(`http://localhost:3001/court/${id}`, {
+        const courtRes = await axios.get(`${API_DOMAIN}/court/${id}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         names[id] = courtRes.data.name;
@@ -71,7 +72,7 @@ export default function PaymentForm() {
     try {
       for (const res of pendingReservations) {
         await axios.post(
-          "http://localhost:3001/reservation/confirm",
+          `${API_DOMAIN}/reservation/confirm`,
           {
             reservationId: res.id,
             paymentAmount: res.price,

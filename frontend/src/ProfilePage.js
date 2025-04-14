@@ -1,6 +1,7 @@
 // src/ProfilePage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_DOMAIN } from "./config";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ export default function ProfilePage() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    axios.get("http://localhost:3001/user/profile", {
+    axios.get(`${API_DOMAIN}/user/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then(res => {
       setUser(res.data.user);
@@ -25,7 +26,7 @@ export default function ProfilePage() {
         <div>
           <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
           <p><strong>Email:</strong> {user.email}</p>
-         <p><strong>Max Bookings Per Day:</strong> {user.maxCourtsPerDay}</p>
+         <p><strong>Max Bookings:</strong> {user.maxCourtsPerDay}</p>
         </div>
       ) : (
         <p>Loading profile...</p>

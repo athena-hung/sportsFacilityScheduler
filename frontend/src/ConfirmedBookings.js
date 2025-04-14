@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_DOMAIN } from "./config";
 import "./CSS/ConfirmedBookings.css";
 import { useNavigate } from "react-router-dom";
-import courtImage from '/Users/anishbommireddy/java/sportsFacilityScheduler/frontend/src/pics/Court_listing.png';
+import courtImage from './pics/Court_listing.png';
 
 export default function ConfirmedBookings() {
   const [bookings, setBookings] = useState([]);
@@ -22,12 +23,12 @@ export default function ConfirmedBookings() {
 
   const fetchConfirmedBookings = async (authToken) => {
     try {
-      const response = await axios.get("http://localhost:3001/reservation", {
+      const response = await axios.get(`${API_DOMAIN}/reservation`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
         params: {
-          status: "Confirmed",
+          status: "",
         },
       });
 
@@ -37,7 +38,7 @@ export default function ConfirmedBookings() {
       const uniqueCourtIds = [...new Set(response.data.map(b => b.court_id))];
       const courtData = {};
       for (const courtId of uniqueCourtIds) {
-        const courtRes = await axios.get(`http://localhost:3001/court/${courtId}`, {
+        const courtRes = await axios.get(`${API_DOMAIN}/court/${courtId}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -52,7 +53,7 @@ export default function ConfirmedBookings() {
 
   const fetchCurrentUser = async (authToken) => {
     try {
-      const response = await axios.get("http://localhost:3001/user/profile", {
+      const response = await axios.get(`${API_DOMAIN}/user/profile`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -70,6 +71,14 @@ export default function ConfirmedBookings() {
         courtName: courts[booking.court_id] || `Court ${booking.court_id}`,
         startTime: booking.start,
       },
+    });
+  };
+
+  const handlePayment = (booking) => {
+    navigate("/payment", {
+      state: {
+        selected: [booking]  // Pass as array to match PaymentForm's expected format
+      }
     });
   };
 
@@ -116,7 +125,15 @@ export default function ConfirmedBookings() {
                   hours
                 </p>
                 <p>
-                  Status: <span style={{ color: "green" }}>Confirmed</span>
+                  Status:{" "}
+                  <span style={{ 
+                    color: booking.status.toLowerCase() === "confirmed" ? "green" : 
+                           booking.status.toLowerCase() === "cancelled" ? "red" : 
+                           booking.status.toLowerCase() === "pending" ? "orange" : 
+                           "black"
+                  }}>
+                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                  </span>
                 </p>
               </div>
             </div>
@@ -125,15 +142,47 @@ export default function ConfirmedBookings() {
               <p>
                 Total Amount: <strong>${booking.price || 0}</strong>
               </p>
-              <button
-                onClick={() => handleCancel(booking)}
-                className="cancel-booking-btn"
-              >
-                Cancel Booking
-              </button>
-              <button className="download-receipt-btn">
-                Download Receipt
-              </button>
+              {booking.status.toLowerCase() !== "cancelled" && (
+                <button
+                  onClick={() => handleCancel(booking)}
+                  className="cancel-booking-btn"
+                >
+                  Cancel Booking
+                </button>
+              )}
+              {booking.status.toLowerCase() === "pending" && (
+                <button 
+                  onClick={() => handlePayment(booking)}
+                  className="pay-now-btn" 
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Pay Now
+                </button>
+              )}
+              {booking.status.toLowerCase() === "confirmed" && (
+                <button 
+                  className="download-receipt-btn"
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Download Receipt
+                </button>
+              )}
             </div>
           </div>
         ))

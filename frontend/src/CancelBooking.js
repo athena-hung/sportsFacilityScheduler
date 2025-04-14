@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_DOMAIN } from "./config";
 import "./CSS/CancelBooking.css";
-import courtImage from '/Users/anishbommireddy/java/sportsFacilityScheduler/frontend/src/pics/Court_listing.png';
+import courtImage from './pics/Court_listing.png';
 
 export default function CancelBooking() {
   const [reservations, setReservations] = useState([]);
@@ -22,7 +23,7 @@ export default function CancelBooking() {
       setToken(storedToken);
 
       try {
-        const res = await axios.get("http://localhost:3001/reservation", {
+        const res = await axios.get(`${API_DOMAIN}/reservation`, {
           headers: { Authorization: `Bearer ${storedToken}` },
           params: { status: "Confirmed" },
         });
@@ -33,7 +34,7 @@ export default function CancelBooking() {
 
         const courtData = {};
         for (const booking of bookings) {
-          const courtRes = await axios.get(`http://localhost:3001/court/${booking.court_id}`, {
+          const courtRes = await axios.get(`${API_DOMAIN}/court/${booking.court_id}`, {
             headers: { Authorization: `Bearer ${storedToken}` },
           });
           courtData[booking.court_id] = courtRes.data.name;
@@ -62,7 +63,7 @@ export default function CancelBooking() {
   const handleCancel = async () => {
     try {
       await axios.put(
-        `http://localhost:3001/reservation/${selectedId}`,
+        `${API_DOMAIN}/reservation/${selectedId}`,
         { status: "Cancelled", notes: reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );

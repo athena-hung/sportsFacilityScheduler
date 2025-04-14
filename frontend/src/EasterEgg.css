@@ -1,0 +1,39 @@
+.easter-egg-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.easter-egg-container .tennis-ball {
+  font-size: 80px;
+  margin-bottom: 30px;
+  transition: transform 0.5s ease;
+}
+
+.easter-egg-container .tennis-ball.bounce {
+  transform: translateY(-30px);
+}
+
+.easter-egg-container h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.easter-egg-container p {
+  font-size: 1.2em;
+  margin: 10px 0;
+  color: #666;
+}
+
+.easter-egg-container .secret-message {
+  margin-top: 30px;
+  font-style: italic;
+  color: #4CAF50;
+  font-size: 1.4em;
+} 

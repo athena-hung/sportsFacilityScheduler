@@ -63,7 +63,7 @@ const CourtBooking = () => {
           type="text"
           value={sport}
           onChange={(e) => setSport(e.target.value)}
-          placeholder="e.g., tennis, basketball"
+          placeholder="e.g., tennis, basketball, pickleball"
         />
       </div>
 

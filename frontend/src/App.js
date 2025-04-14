@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import Login from './Login';
-import SignUp from './SignUp';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./Login";
+import SignUp from "./SignUp";
 import CancelBooking from "./CancelBooking";
 import BookingCancelled from "./BookingCancelled";
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PaymentForm from "./PaymentForm";
 import ConfirmedBookings from "./ConfirmedBookings";
 import CourtBooking from "./CourtBooking";
 import BookingDetails from "./BookingDetails";
-import Cart from "./Cart.js";
+import Cart from "./Cart";
+import Navbar from "./Navbar"; 
+import "./App.css";
+import ProfilePage from "./ProfilePage";
 
 function App() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -20,7 +22,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Default page = Login/SignUp toggle */}
+        {/* Login/Signup Page - No Navbar */}
         <Route
           path="/"
           element={
@@ -40,16 +42,28 @@ function App() {
             </div>
           }
         />
-        <Route path="/court-booking" element={<CourtBooking />} />
-        <Route path="/cancel-booking" element={<CancelBooking />} />
-        <Route path="/booking-cancelled" element={<BookingCancelled />} />
-        <Route path="/booking-details" element={<BookingDetails />} />
-        <Route path = "/payment" element = {<PaymentForm />} />
-        <Route path = "/confirmed-bookings" element = {<ConfirmedBookings />} />
-        <Route path = "/cart" element = {<Cart />} />
+
+        {/* Pages WITH Navbar */}
+        <Route
+          path="/*"
+          element={
+            <>
+              <Navbar />
+              <Routes>
+                <Route path="court-booking" element={<CourtBooking />} />
+                <Route path="cancel-booking" element={<CancelBooking />} />
+                <Route path="booking-cancelled" element={<BookingCancelled />} />
+                <Route path="booking-details" element={<BookingDetails />} />
+                <Route path="payment" element={<PaymentForm />} />
+                <Route path="confirmed-bookings" element={<ConfirmedBookings />} />
+                <Route path="cart" element={<Cart />} />
+                <Route path = "profile" element = {<ProfilePage />} />
+              </Routes>
+            </>
+          }
+        />
       </Routes>
     </Router>
-    //<PaymentForm />
   );
 }
 

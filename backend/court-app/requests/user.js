@@ -21,36 +21,31 @@ router.post('/register', async (req, res) => {
     lastName,
     address,
     birthdate,
-    maxCourtsPerDay, // Only admins can override this field
+    maxCourtsPerDay, 
     email,
     password,
     org_id,
-    member_type_id // Only admins can override this field
+    member_type_id 
   } = req.body;
 
   try {
-    // Check if the user already exists
     const existingUser = await knex('user').where({ email }).first();
     if (existingUser) {
       return res.status(400).json({ message: 'User with this email already exists.' });
     }
 
-    // Determine member_type_id: only admins can override this field
     let selectedMemberTypeId;
     let isAdmin = false;
     if (req.user) {
-      // Retrieve the requester's member type and check if they are admin
       const currentMemberType = await knex('member_type').where({ id: req.user.member_type_id }).first();
       isAdmin = currentMemberType &&
                 currentMemberType.type &&
                 currentMemberType.type.toLowerCase() === 'admin';
 
-      // Allow admin to set member_type_id if provided
       if (isAdmin && member_type_id) {
         selectedMemberTypeId = member_type_id;
       }
     }
-    // If not set by an admin, get the first found default member type from the organization
     if (!selectedMemberTypeId) {
       if (!org_id) {
         return res.status(400).json({ message: 'Missing required field: org_id' });
@@ -64,13 +59,10 @@ router.post('/register', async (req, res) => {
       selectedMemberTypeId = defaultMemberType.id;
     }
 
-    // Determine maxCourtsPerDay: only admins can override this field
     let chosenMaxCourtsPerDay;
     if (isAdmin && maxCourtsPerDay) {
-      // Admin provided a custom value
       chosenMaxCourtsPerDay = maxCourtsPerDay;
     } else {
-      // For non-admins or if no custom value provided, default to the organization's default
       if (!org_id) {
         return res.status(400).json({ message: 'Missing required field: org_id' });
       }
@@ -81,10 +73,8 @@ router.post('/register', async (req, res) => {
       chosenMaxCourtsPerDay = organization.defaultCourtsPerDay;
     }
 
-    // Hash the provided password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert the new user into the database and return the inserted row
     const insertedUsers = await knex('user')
       .insert({
         firstName,
@@ -93,14 +83,13 @@ router.post('/register', async (req, res) => {
         birthdate,
         maxCourtsPerDay: chosenMaxCourtsPerDay,
         email,
-        password: hashedPassword, // Store hashed password
+        password: hashedPassword, 
         org_id,
         member_type_id: selectedMemberTypeId
       })
       .returning('*');
 
     const newUser = insertedUsers[0];
-    // Remove sensitive fields before sending the response
     if (newUser.password) {
       delete newUser.password;
     }
@@ -126,7 +115,6 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials.' });
     }
 
-    // Prepare token payload (avoid including sensitive fields)
     const tokenPayload = { id: user.id, email: user.email };
     const token = jwt.sign(
       tokenPayload,
@@ -140,36 +128,29 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Optional: A protected route to fetch the current user's profile
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({ user: req.user });
 });
 
-// Endpoint to update user information
-// Only admins can edit member_type_id and maxCourtsPerDay
 router.put('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const { id } = req.params;
   const requestingUser = req.user;
   
   try {
-    // Check if the targeted user exists
     const userToUpdate = await knex('user').where({ id }).first();
     if (!userToUpdate) {
       return res.status(404).json({ message: 'User not found.' });
     }
     
-    // Retrieve the member type of the requesting user
     const currentMemberType = await knex('member_type').where({ id: requestingUser.member_type_id }).first();
     const isAdmin = currentMemberType &&
                     currentMemberType.type &&
                     currentMemberType.type.toLowerCase() === 'admin';
     
-    // Non-admins can only update their own information
     if (!isAdmin && requestingUser.id !== userToUpdate.id) {
       return res.status(403).json({ message: 'You are not allowed to update this user info.' });
     }
     
-    // Build the update object from fields allowed for all users
     const updateData = {};
     if (req.body.firstName !== undefined) {
       updateData.firstName = req.body.firstName;
@@ -187,7 +168,6 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
       updateData.email = req.body.email;
     }
     
-    // Only admins are allowed to update member_type_id and maxCourtsPerDay.
     if (isAdmin) {
       if (req.body.member_type_id !== undefined) {
         updateData.member_type_id = req.body.member_type_id;
@@ -202,7 +182,6 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
       .update(updateData)
       .returning('*');
     
-    // Remove sensitive data from the response
     if (updatedUser.password) {
       delete updatedUser.password;
     }

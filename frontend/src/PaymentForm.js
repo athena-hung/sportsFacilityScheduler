@@ -32,7 +32,6 @@ export default function PaymentForm() {
 
       const pending = response.data;
 
-      // If user came from cart with selected reservations, use only those
       const filtered = selectedFromCart.length
         ? pending.filter((res) => selectedFromCart.some((sel) => sel.id === res.id))
         : pending;
@@ -87,7 +86,7 @@ export default function PaymentForm() {
 
       alert("Payment confirmed and reservations updated!");
       setFormData({});
-      fetchPendingReservations(token); // Refresh list
+      fetchPendingReservations(token); 
     } catch (err) {
       console.error("Error confirming payment:", err);
       alert("Payment failed. See console for details.");

@@ -34,7 +34,6 @@ export default function ConfirmedBookings() {
 
       setBookings(response.data);
 
-      // Fetch court names for each unique court_id
       const uniqueCourtIds = [...new Set(response.data.map(b => b.court_id))];
       const courtData = {};
       for (const courtId of uniqueCourtIds) {
@@ -77,7 +76,7 @@ export default function ConfirmedBookings() {
   const handlePayment = (booking) => {
     navigate("/payment", {
       state: {
-        selected: [booking]  // Pass as array to match PaymentForm's expected format
+        selected: [booking]  
       }
     });
   };

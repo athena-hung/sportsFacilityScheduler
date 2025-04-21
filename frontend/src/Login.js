@@ -24,12 +24,11 @@ function Login({ onSignUpClick }) {
       const res = await axios.post(`${API_DOMAIN}/user/login`, formData);
       const { token } = res.data;
 
-      // ✅ Save token to localStorage
       localStorage.setItem('token', token);
 
       console.log("Token saved:", token);
       setMessage('Login successful!');
-      navigate('/court-booking'); // ✅ Navigate after login
+      navigate('/court-booking'); 
     } catch (err) {
       console.error('Login error:', err);
       setMessage(err.response?.data?.message || 'Login failed.');

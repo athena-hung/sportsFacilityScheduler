@@ -20,13 +20,11 @@ export default function Cart() {
     if (pendingReservation) {
       const reservationKey = `${pendingReservation.courtId}-${pendingReservation.start}-${pendingReservation.end}`;
       
-      // Only process if we haven't seen this reservation before
       if (!processedReservationsRef.current.has(reservationKey)) {
         processedReservationsRef.current.add(reservationKey);
         setPendingReservations(prev => [...prev, pendingReservation]);
       }
 
-      // Clear the location state
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -91,15 +89,12 @@ export default function Cart() {
       setLoading(true);
       setError(null);
 
-      // Create all pending reservations
       for (const reservationInfo of pendingReservations) {
         await createReservation(reservationInfo);
       }
 
-      // Clear pending reservations after successful creation
       setPendingReservations([]);
       
-      // Refresh the reservations list
       const token = localStorage.getItem("token");
       const res = await axios.get(`${API_DOMAIN}/reservation`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -108,7 +103,6 @@ export default function Cart() {
 
       if (Array.isArray(res.data)) {
         setReservations(res.data);
-        // Navigate to payment with all reservations
         navigate("/payment", { state: { selected: res.data } });
       }
     } catch (err) {

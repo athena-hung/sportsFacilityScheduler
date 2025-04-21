@@ -8,14 +8,12 @@ import './CourtBooking.css';
 
 const DEFAULT_COURT_TYPES = ["Tennis", "Pickleball"];
 
-// Helper function to get current date in EST
 const getEstDate = () => {
   return new Date().toLocaleString("en-US", {
     timeZone: "America/New_York",
   });
 };
 
-// Helper function to format date as YYYY-MM-DD in EST
 const formatDate = (date) => {
   const estDate = new Date(date).toLocaleString("en-US", {
     timeZone: "America/New_York",
@@ -27,35 +25,29 @@ const formatDate = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-// Helper function to format time as HH:mm
 const formatTime = (hours, minutes) => {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 };
 
-// Helper function to infer AM/PM for an hour
 const inferAmPm = (hour, context = {}) => {
-  // If we have a pair of times and the second is less than the first
-  // then the second time is PM (e.g. "8 to 4" means "8 AM to 4 PM")
   if (context.isEndTime && context.startHour && hour < context.startHour) {
     return hour + 12;
   }
 
-  if (hour === 12) return 12; // 12 is always as specified
-  if (hour >= 9 && hour <= 11) return hour; // 9-11 assumed AM
-  if (hour >= 1 && hour <= 8) return hour + 12; // 1-8 assumed PM
-  return hour; // Return as-is for edge cases
+  if (hour === 12) return 12; 
+  if (hour >= 9 && hour <= 11) return hour; 
+  if (hour >= 1 && hour <= 8) return hour + 12; 
+  return hour; 
 };
 
-// Helper function to get next Monday
 const getNextMonday = (fromDate) => {
   const monday = new Date(fromDate);
   const dayOfWeek = monday.getDay();
-  const daysUntilMonday = dayOfWeek === 0 ? 1 : 8 - dayOfWeek; // If Sunday, add 1 day, otherwise get to next Monday
+  const daysUntilMonday = dayOfWeek === 0 ? 1 : 8 - dayOfWeek; 
   monday.setDate(monday.getDate() + daysUntilMonday);
   return monday;
 };
 
-// Helper function to parse natural language input
 const parseNaturalLanguage = (input) => {
   const results = chrono.parse(input, new Date(), { forwardDate: true });
   if (!results.length) return null;
@@ -66,37 +58,30 @@ const parseNaturalLanguage = (input) => {
     endDate: null,
     startTime: null,
     endTime: null,
-    duration: "60" // Default duration is 60 minutes
+    duration: "60" 
   };
 
-  // Extract sport type
   const lowerInput = input.toLowerCase();
   if (lowerInput.includes('tennis')) parsed.sport = 'Tennis';
   else if (lowerInput.includes('pickleball')) parsed.sport = 'Pickleball';
 
-  // Extract date and time information
   const result = results[0];
   
-  // Handle start date/time
   if (result.start) {
     let startDate = result.start.date();
     
-    // Handle "next week" specifically
     if (lowerInput.includes('next week')) {
       startDate = getNextMonday(new Date());
       
-      // Set start date to next Monday
       parsed.startDate = formatDate(startDate);
       
-      // Set end date to that Friday
       const endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 4); // Add 4 days to get to Friday
+      endDate.setDate(startDate.getDate() + 4); 
       parsed.endDate = formatDate(endDate);
     } else {
       parsed.startDate = formatDate(startDate);
     }
 
-    // Handle time ranges with "between X and Y" or "from X to Y" or just "X to Y"
     const betweenMatch = lowerInput.match(/between\s+(\d+)(?::\d+)?\s*(?:and|-)\s*(\d+)(?::\d+)?/i);
     const fromMatch = lowerInput.match(/from\s+(\d+)(?::\d+)?\s*(?:to|-)\s*(\d+)(?::\d+)?/i);
     const simpleRangeMatch = !betweenMatch && !fromMatch ? lowerInput.match(/(\d+)(?::\d+)?\s*(?:to|-)\s*(\d+)(?::\d+)?/i) : null;
@@ -106,7 +91,6 @@ const parseNaturalLanguage = (input) => {
       let startHour = parseInt(match[1]);
       let endHour = parseInt(match[2]);
       
-      // Apply AM/PM inference if not explicitly specified
       if (!lowerInput.includes('am') && !lowerInput.includes('pm')) {
         startHour = inferAmPm(startHour, { isEndTime: false });
         endHour = inferAmPm(endHour, { isEndTime: true, startHour: startHour });
@@ -115,16 +99,13 @@ const parseNaturalLanguage = (input) => {
       parsed.startTime = formatTime(startHour, 0);
       parsed.endTime = formatTime(endHour, 0);
       
-      // Calculate duration in minutes
       const durationMinutes = ((endHour + 24) - startHour) % 24 * 60;
       
-      // Only set duration for "from" pattern if it's 3 hours or less
-      // Or if there's an explicit duration specified
+
       if ((fromMatch || simpleRangeMatch) && durationMinutes <= 180) {
         parsed.duration = durationMinutes.toString();
       }
     } else if (result.start.isCertain('hour')) {
-      // Only use chrono's time parsing if we didn't find a time range pattern
       let hours = startDate.getHours();
       if (!lowerInput.includes('am') && !lowerInput.includes('pm') && 
           !result.start.isCertain('meridiem')) {
@@ -132,17 +113,14 @@ const parseNaturalLanguage = (input) => {
       }
       parsed.startTime = formatTime(hours, startDate.getMinutes());
       
-      // Set default end time to 1 hour later
       const totalMinutes = hours * 60 + startDate.getMinutes() + 60;
       parsed.endTime = formatTime(Math.floor(totalMinutes / 60), totalMinutes % 60);
     }
   }
 
-  // Handle explicit end date/time if not already handled by "next week" or time range
   if (result.end && !lowerInput.includes('next week') && !parsed.endTime) {
     const endDate = result.end.date();
     
-    // For date ranges like "monday to friday", ensure end date is after start date
     if (parsed.startDate) {
       const startDateObj = new Date(parsed.startDate);
       if (endDate < startDateObj) {
@@ -165,24 +143,20 @@ const parseNaturalLanguage = (input) => {
     }
   }
 
-  // Set end date to start date if not specified and not a week range
   if (parsed.startDate && !parsed.endDate && !lowerInput.includes('next week')) {
     parsed.endDate = parsed.startDate;
   }
 
-  // Try to extract explicit duration from common phrases
   const durationMatch = lowerInput.match(/for\s+(\d+)\s*(hour|hr|hours|mins|minutes|min)/i);
   if (durationMatch) {
     const amount = parseInt(durationMatch[1]);
     const unit = durationMatch[2].toLowerCase();
     
-    // Convert to minutes
     const minutes = unit.startsWith('hour') || unit.startsWith('hr') 
       ? amount * 60 
       : amount;
     
     if (parsed.startTime) {
-      // Calculate end time based on duration
       const startParts = parsed.startTime.split(':').map(Number);
       const totalMinutes = startParts[0] * 60 + startParts[1] + minutes;
       parsed.endTime = formatTime(Math.floor(totalMinutes / 60), totalMinutes % 60);
@@ -190,7 +164,6 @@ const parseNaturalLanguage = (input) => {
     parsed.duration = minutes.toString();
   }
 
-  // Debug log to help with troubleshooting
   console.log('Parsed natural language input:', {
     original: input,
     parsed,
@@ -200,20 +173,17 @@ const parseNaturalLanguage = (input) => {
   return parsed;
 };
 
-// Get default dates in EST
 const today = new Date(getEstDate());
 const nextWeek = new Date(today);
 nextWeek.setDate(today.getDate() + 7);
 
-// Default times (in EST)
-const DEFAULT_START_TIME = formatTime(9, 0);  // 9:00 AM EST
-const DEFAULT_END_TIME = formatTime(17, 0);   // 5:00 PM EST
+const DEFAULT_START_TIME = formatTime(9, 0);  
+const DEFAULT_END_TIME = formatTime(17, 0);   
 
 const CourtBooking = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Get preserved search state if it exists
   const preservedState = location.state || {};
   const shouldRestoreSearch = preservedState.preserveSearch;
 
@@ -230,12 +200,11 @@ const CourtBooking = () => {
   const [availableCourts, setAvailableCourts] = useState([]);
   const [errors, setErrors] = useState({});
 
-  // Automatically trigger search if we're restoring state
   useEffect(() => {
     if (shouldRestoreSearch) {
       handleSearch();
     }
-  }, []);  // Empty dependency array since we only want this to run once on mount
+  }, []);  
 
   useEffect(() => {
     const fetchCourtTypes = async () => {
@@ -257,12 +226,10 @@ const CourtBooking = () => {
     fetchCourtTypes();
   }, []);
 
-  // Effect to handle natural language parsing results
   useEffect(() => {
     if (parsedNaturalLanguage) {
       const parsed = parsedNaturalLanguage;
       
-      // Update form fields with parsed values
       if (parsed.sport) setSport(parsed.sport);
       if (parsed.startDate) setStartDate(parsed.startDate);
       if (parsed.endDate) setEndDate(parsed.endDate);
@@ -270,7 +237,6 @@ const CourtBooking = () => {
       if (parsed.endTime) setEndTime(parsed.endTime);
       if (parsed.duration) setDuration(parsed.duration);
 
-      // If we have start and end time but no duration, calculate it
       if (parsed.startTime && parsed.endTime && !parsed.duration) {
         const [startHour, startMin] = parsed.startTime.split(':').map(Number);
         const [endHour, endMin] = parsed.endTime.split(':').map(Number);
@@ -280,17 +246,13 @@ const CourtBooking = () => {
         }
       }
 
-      // Clear the parsed results to prevent re-running
       setParsedNaturalLanguage(null);
-      // Set flag to trigger search after updates
       setShouldTriggerSearch(true);
     }
   }, [parsedNaturalLanguage]);
 
-  // Effect to handle search after all fields are updated
   useEffect(() => {
     if (shouldTriggerSearch) {
-      // Add delay to ensure all state updates are complete
       setTimeout(() => {
         handleSearch();
         setShouldTriggerSearch(false);
@@ -352,7 +314,6 @@ const CourtBooking = () => {
     });
   };
 
-  // Handle natural language input
   const handleNaturalLanguageSearch = () => {
     const parsed = parseNaturalLanguage(naturalLanguageInput);
     if (!parsed) {
@@ -360,10 +321,8 @@ const CourtBooking = () => {
       return;
     }
 
-    // Clear any previous errors
     setErrors({});
 
-    // Set the parsed results which will trigger the useEffect
     setParsedNaturalLanguage(parsed);
   };
 

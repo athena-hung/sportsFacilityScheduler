@@ -68,13 +68,13 @@ function SignUp({ onSignInClick }) {
     try {
       const response = await axios.post(`${API_DOMAIN}/user/register`, {
         firstName: formData.username,
-        lastName: 'Last', // You can adjust this when you update the form later
-        address: '123 Street', // Optional hardcoded for now
-        birthdate: '2000-01-01', // Example birthdate
-        maxCourtsPerDay: 1, // optional or ignore
+        lastName: 'Last', 
+        address: '123 Street', 
+        birthdate: '2000-01-01', 
+        maxCourtsPerDay: 1, 
         email: formData.email,
         password: formData.password,
-        org_id: 1 //must match what exists in your database
+        org_id: 1 
       });
 
       console.log('User registered:', response.data);

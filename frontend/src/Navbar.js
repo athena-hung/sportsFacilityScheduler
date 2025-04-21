@@ -1,4 +1,3 @@
-// src/components/Navbar.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./CSS/Navbar.css";
@@ -9,13 +8,10 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    // Clear all auth-related data from localStorage
     localStorage.clear();
     
-    // Reset any sensitive state if needed
     setIsMenuOpen(false);
     
-    // Redirect to login page
     navigate("/", { replace: true });
   };
 

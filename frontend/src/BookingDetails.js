@@ -20,16 +20,13 @@ const BookingDetails = () => {
     startTime: initialStartTime = "",
     endTime: initialEndTime = "",
     duration = "60",
-    // Preserve all search parameters
     sport = "",
     location: searchLocation = ""
   } = state;
 
-  // Helper function to check if a time is within the preferred window
   const isTimeWithinWindow = (time) => {
     if (!initialStartTime || !initialEndTime) return true;
     
-    // Convert all times to minutes since midnight for easier comparison
     const [startHours, startMinutes] = initialStartTime.split(':').map(Number);
     const [endHours, endMinutes] = initialEndTime.split(':').map(Number);
     const [timeHours, timeMinutes] = time.split(':').map(Number);
@@ -38,22 +35,18 @@ const BookingDetails = () => {
     const endInMinutes = endHours * 60 + endMinutes;
     const timeInMinutes = timeHours * 60 + timeMinutes;
     
-    // Handle cases where end time is on the next day (e.g., "22:00 - 02:00")
     if (endInMinutes < startInMinutes) {
       return timeInMinutes >= startInMinutes || timeInMinutes <= endInMinutes;
     }
     
-    // Include times that match either the start or end time using inclusive comparison
     return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
   };
 
-  // Filter available slots based on time window
   const filteredAvailableSlots = availableSlots.filter(isTimeWithinWindow);
 
   const handleBackToListing = () => {
     navigate('/court-booking', {
       state: {
-        // Pass back all search parameters
         sport,
         location: searchLocation,
         startDate,
@@ -61,7 +54,7 @@ const BookingDetails = () => {
         startTime: initialStartTime,
         endTime: initialEndTime,
         duration,
-        preserveSearch: true // Flag to indicate we should restore the search
+        preserveSearch: true 
       }
     });
   };
@@ -72,7 +65,6 @@ const BookingDetails = () => {
         setLoading(true);
         const token = localStorage.getItem("token");
 
-        // First fetch user profile to check booking limits
         const userResponse = await fetch(`${API_DOMAIN}/user/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -147,19 +139,17 @@ const BookingDetails = () => {
 
   const handleTimeSelect = async (startTime) => {
     if (error && error.includes("maximum limit")) {
-      return; // Don't proceed if user has reached their booking limit
+      return; 
     }
     
     setSelectedTime(startTime);
     
-    // Calculate end time based on duration
     const [hours, minutes] = startTime.split(':');
     const startDateTime = new Date();
     startDateTime.setHours(parseInt(hours), parseInt(minutes));
     const endDateTime = new Date(startDateTime.getTime() + parseInt(duration) * 60000);
     const endTime = `${String(endDateTime.getHours()).padStart(2, '0')}:${String(endDateTime.getMinutes()).padStart(2, '0')}`;
 
-    // Instead of creating reservation, store the info and navigate to cart
     const reservationInfo = {
       start: `${startDate}T${startTime}`,
       end: `${startDate}T${endTime}`,
@@ -169,7 +159,6 @@ const BookingDetails = () => {
       org_name: court.org_name
     };
 
-    // Navigate to cart with reservation info
     navigate("/cart", { 
       state: { 
         pendingReservation: reservationInfo
